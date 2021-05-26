@@ -1,19 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+
+import { PhotoService } from './photos/photo/photo.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
-  photos = [
-    {
-      url: 'https://tatuagenstattoo.com.br/wp-content/uploads/2016/08/1540-phoenix-tribal_large-1.jpg',
-      description: 'tatoo phoenix tribal',
-    },
-    {
-      url: 'https://i.pinimg.com/originals/dc/62/47/dc6247f16ecf8dc8b9e38dfb6d56f8e5.png',
-      description: 'Tatoo Basquete'
-    }
-  ];
+export class AppComponent implements OnInit {
+
+  photos: any[] = [];
+
+  constructor(private photoService: PhotoService) { }
+
+  ngOnInit(): void {
+
+    this.photoService
+      .listFromUser('flavio')
+      .subscribe(photos => this.photos = photos);
+  }
 }
+
