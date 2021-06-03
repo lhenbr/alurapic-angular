@@ -1,22 +1,17 @@
-import { PlataformDetectorService } from './../../../core/plataform-detector/platform.detector.service';
-import { element } from 'protractor';
-
-import { Directive, ElementRef, OnInit } from '@angular/core';
+import { Directive, ElementRef, OnInit } from "@angular/core";
+import { PlatformDetectorService } from "../../../core/plataform-detector/platform-detector.service";
 
 @Directive({
-  // tslint:disable-next-line: directive-selector
-  selector: '[ImmediateClick]'
+    selector: '[immediateClick]'
 })
-export class ImmediateClickDirective implements OnInit {
+export class ImmediateClickDirective implements OnInit { 
 
-  constructor(
-    // tslint:disable-next-line: no-shadowed-variable
-    private element: ElementRef,
-    private platformDetector: PlataformDetectorService) { }
-  // tslint:disable-next-line: no-unused-expression
-  ngOnInit(): void {
-    // tslint:disable-next-line: no-unused-expression
-    this.platformDetector.isPlatformBrowser &&
-      this.element.nativeElement.click();
-  }
+    constructor(
+        private element: ElementRef<any>,
+        private platFormDetector: PlatformDetectorService) {}
+        
+        ngOnInit(): void {
+            this.platFormDetector.isPlatformBrowser && 
+            this.element.nativeElement.click();
+        }
 }
