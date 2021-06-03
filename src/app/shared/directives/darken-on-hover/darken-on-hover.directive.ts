@@ -9,6 +9,7 @@ export class DarkenOnHoverDirective {
   @Input() brightness = '70%';
   constructor(
     private el: ElementRef,
+    // tslint:disable-next-line: deprecation
     private render: Renderer) { }
 
   @HostListener('mouseover')
