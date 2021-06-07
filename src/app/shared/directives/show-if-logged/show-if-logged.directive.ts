@@ -1,24 +1,31 @@
-import { OnInit, Renderer } from '@angular/core';
-import { UserService } from './../../../core/user/user.service';
-import { ElementRef } from '@angular/core';
-import { Directive, Input } from '@angular/core';
+import { Directive, Renderer, OnInit } from "@angular/core";
+import { Input } from "@angular/core";
+import { ElementRef } from "@angular/core";
+import { UserService } from "../../../core/user/user.service";
 
 @Directive({
-  // tslint:disable-next-line: directive-selector
-  selector: '[showifLogged]'
+    selector: '[showIfLogged]'
 })
-export class ShowIfLoggedDirective implements OnInit {
+export class ShowIfLoggedDirective implements OnInit { 
+    
+    currentDisplay: string;
 
+    constructor(
+        private element: ElementRef<any>,
+        private renderer: Renderer,
+        private userService: UserService
+    ) {}
 
-  constructor(
-    private element: ElementRef<any>,
-    // tslint:disable-next-line: deprecation
-    private renderer: Renderer,
-    private userService: UserService
-  ) { }
-  ngOnInit(): void {
-    if (!this.userService.isLogged()) {
-      this.renderer.setElementStyle(this.element.nativeElement, 'display', 'none');
+    ngOnInit(): void {
+
+        this.currentDisplay = getComputedStyle(this.element.nativeElement).display;
+        this.userService.getUser().subscribe(user => {
+            if(user) {
+                this.renderer.setElementStyle(this.element.nativeElement, 'display', this.currentDisplay);
+            } else {
+                this.currentDisplay = getComputedStyle(this.element.nativeElement).display;
+                this.renderer.setElementStyle(this.element.nativeElement, 'display', 'none');
+            }
+        });
     }
-  }
 }
